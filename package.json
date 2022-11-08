@@ -1,0 +1,26 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "Employee Tracker is a command-line application utilitzing Node.js, Inquirer, and MySQL to manage a company's employee database.",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://https://github.com/tmorgan1987/Employee-Tracker"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tmorgan1987/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/tmorgan1987/Empployee-Tracker",
+  "dependencies": {
+		"dotenv": "^16.0.3",
+    "inquirer": "^7.1.0",
+    "mysql2": "^2.1.0"
+  }
+}
