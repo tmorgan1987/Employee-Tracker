@@ -33,27 +33,21 @@ const menu = () => {
 	.then((selection ) => {
 		const { choices } = selection;
 		if (selection === 'View Employees') {
-			seeEmployees();
+			seeEmployees();  //done
 		} else if (selection === 'View Employee Roles') {
-			seeRoles();
+			seeRoles(); //done
 		} else if (selection === 'View the Departments') {
-			seeDepartments();
+			seeDepartments(); //done
 		} else if (selection === 'Add an Employee') {
-			addEmployee();
+			addEmployee(); //done
 		} else if (selection === 'Update an Employee') {
-			updateEmployee();
+			updateEmployee(); //done
 		} else if (selection === 'Add an Employee Role') {
-			addEmployeeRole();
-		} else if (selection === 'View the Departments') {
-			viewDepartments();
-		} else if (selection === 'Add an Employee') {
-			addEmployee();
+			addEmployeeRole(); //done
 		} else if (selection === 'Update an Employee') {
-			updateEmployee();
-		} else if (selection === 'Add an Employee Role') {
-			addEmployeeRole();
+			updateEmployee(); //done
 		} else if (selection === 'Add a Department') {
-			addDepartment();
+			addDepartment(); //done
 		} else (selection === 'Quit'); {
 			connection.end();
 		};
@@ -235,10 +229,102 @@ updateEmployee = () => {
 						console.log("The employee has been successfully updated!");
 
 					seeEmployees();
-					
+
 					});
 				});
 			});
 		});
 	});
+};
+
+// let's add an employee role.
+addEmployeeRole = () => {
+	inquirer.prompt([
+		{
+			type: 'input',
+			name: 'role',
+			message: "What role would you like to add?",
+			validate: addEmployeeRole => {
+				if (addEmployeeRole) {
+					return true;
+				} else {
+					console.log('Please enter a new role for the employees.');
+					return false;
+				}
+			}
+		},
+		{
+		type: 'input',
+		name: 'salary',
+		message: 'What is the salary for this new role?',
+		valide: addSalary => {
+			if (isNaN(addSalary)) {
+				return true;
+			} else {
+				console.log('Please enter a salary for the role you are creating.');
+				return false;
+			}
+		}
+	}
+])
+	.then(answer => {
+		const params = [answer.role, answer.salary];
+		const roleSql = `SELECT name, id FROM department`;
+
+		connection.promise().query(roleSql, (err, data) => {
+			if (err) throw err;
+			const department = data.map(({ name, id}) => ({ name: name, value: id}));
+
+			inquirer.prompt([
+				{
+					type: 'list',
+					name: 'department',
+					message: 'What department will this role be in?',
+					choices: department
+				}
+			])
+			.then(departmentChoice => {
+				const department = departmentChoice.department;
+				params.push(department);
+
+				const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+
+				connection.query(sql, params, (err, result) => {
+					if (err) throw err;
+					console.log('Added' + answer.role + " to roles!");
+
+					seeRoles();
+				});
+			});
+		});
+	});
+};
+
+//let's add departments
+addDepartment = () => {
+  inquirer.prompt([
+    {
+      type: 'input', 
+      name: 'addDepartment',
+      message: "What department would you like to create??",
+      validate: addDepartment => {
+        if (addDepartment) {
+            return true;
+        } else {
+            console.log('Please enter a department.');
+            return false;
+        }
+      }
+    }
+  ])
+    .then(answer => {
+      const sql = `INSERT INTO department (name)
+                  VALUES (?)`;
+      connection.query(sql, answer.addDepartment, (err, result) => {
+        if (err) throw err;
+        console.log('Added ' + answer.addDepartment + " to departments!"); 
+
+        seeDepartments();
+    });
+  });
 };
