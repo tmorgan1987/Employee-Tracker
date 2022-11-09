@@ -184,3 +184,61 @@ addEmployee = () => {
 });
 });
 };
+
+// let's update an employee.
+updateEmployee = () => {
+	const employeeSql = `SELECT * FROM employee`;
+
+	connection.promise().query(employeeSql, (err, data) => {
+		if (err) throw err;
+		const employees = data.map(({ id, first_name, last_name}) => ({ name: first_name + " "+ last_name, value: id}));
+
+		inquirer.prompt([
+			{
+				type: 'list',
+				name: 'name',
+				message: 'Which of the employees would you like to make updates to?',
+				choices: employees
+			}
+		])
+		.then(employeeChoice => {
+			const employee = employeeChoice.name;
+			const params = [];
+			params.push(employee);
+
+			const roleSql = `SELECT * FROM role`;
+
+			connection.promise().query(roleSql, (err, data) => {
+				if (err) throw err;
+				const roles = data.mpa(({id, title}) => ({ name: title, value: id }));
+
+				inquirer.prompt([
+					{
+						type: 'list',
+						name: 'role',
+						message: "What is the employee's new role?",
+						choices: roles
+					}
+				])
+				then(chosenRole => {
+					const role = chosenRole.role;
+					params.push(role);
+
+					let employee = params[0]
+					params[0] = role
+					params[1] = employee
+
+					const sql = `UPDATE employee SET role_id = ? WHERE id = ?`
+
+					connection.query(sql, params, (err, result) => {
+						if (err) throw err;
+						console.log("The employee has been successfully updated!");
+
+					seeEmployees();
+					
+					});
+				});
+			});
+		});
+	});
+};
