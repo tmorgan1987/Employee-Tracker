@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/tmorgan1987/Empployee-Tracker",
   "dependencies": {
-		"dotenv": "^16.0.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "inquirer": "^7.1.0",
     "mysql2": "^2.1.0"
   }
