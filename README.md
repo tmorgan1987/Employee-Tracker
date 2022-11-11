@@ -28,5 +28,5 @@ github : tmorgan1987
 mit
 
 ## Link
-
-https://github.com/tmorgan1987/Employee-Tracker
+https://drive.google.com/file/d/1kly_Yuz-QAKbfvUCubSlBjCL1arD_XkK/view - Video
+https://github.com/tmorgan1987/Employee-Tracker - Github
